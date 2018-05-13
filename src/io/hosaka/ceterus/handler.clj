@@ -1,5 +1,6 @@
 (ns io.hosaka.ceterus.handler
   (:require [com.stuartsierra.component :as component]
+            [clojure.tools.logging :as log]
             [yada.yada :as yada]
             [manifold.deferred :as d]
             [io.hosaka.common.db.health :as health]
@@ -7,7 +8,12 @@
 
 (defn get-service-key-values [orchestrator {:keys [body response] :as ctx}]
   (let [service (-> ctx :parameters :path :service)]
-    (orchestrator/get-service-key-values orchestrator service)))
+    (d/catch
+        (orchestrator/get-service-key-values orchestrator service body)
+        (fn [e]
+          (do
+            (log/warn "Bad get config request" e)
+            (assoc response :body {:message "Invalid request"} :status 401))))))
 
 (defn get-db-health [health {:keys [response]}]
   (->
@@ -21,7 +27,8 @@
         [["configs/" :service]
          (yada/resource {:parameters {:path {:service String}}
                          :methods {
-                                   :get {:response (partial get-service-key-values orchestrator)
+                                   :post {:response (partial get-service-key-values orchestrator)
+                                         :consumes "text/plain"
                                          :produces "application/json"}}})]
         ["health"
          (yada/resource {:methods {:get {:response (partial get-db-health health)

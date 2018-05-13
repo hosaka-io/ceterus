@@ -5,6 +5,7 @@
             [clojure.tools.logging :as log]
             [io.hosaka.ceterus.handler :refer [new-handler]]
             [io.hosaka.ceterus.orchestrator :refer [new-orchestrator]]
+            [io.hosaka.common.keychain :refer [new-keychain]]
             [io.hosaka.common.db.health :refer [new-health]]
             [io.hosaka.common.db :refer [new-database]]
             [io.hosaka.common.server :refer [new-server]] )
@@ -15,6 +16,7 @@
 (defn init-system [env]
   (component/system-map
    :db (new-database "ceterus" env)
+   :keychain (new-keychain env)
    :orchestrator (new-orchestrator)
    :handler (new-handler)
    :server (new-server env)
