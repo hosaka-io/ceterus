@@ -18,7 +18,11 @@
 (defn new-keychain [env]
   (map->Keychain (select-keys env [:keychain-url])))
 
+(defn parse-stream [stream]
+  (with-open [rdr (reader stream)]
+    (json/parse-stream rdr true)))
+
 (defn validate [{:keys [keychain-url]} jwt]
   (->
    (http/post keychain-url {:body jwt :headers {"content-type" "text/plain"}})
-   (d/chain :body reader #(json/parse-stream % true))))
+   (d/chain :body parse-stream)))
