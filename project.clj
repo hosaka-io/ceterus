@@ -19,6 +19,12 @@
                  [cheshire "5.8.0"]
                  [com.stuartsierra/component "0.3.2"]
 
+                 [buddy/buddy-sign "3.0.0.x"]
+                 [buddy/buddy-core "1.5.0.x"]
+                 [clj-crypto "1.0.2"
+                  :exclusions [org.bouncycastle/bcprov-jdk15on bouncycastle/bcprov-jdk16]]
+                 [clj-time "0.14.2"]
+
                  [ring/ring-core "1.6.2"]
                  [ring/ring-defaults "0.3.1"]
 

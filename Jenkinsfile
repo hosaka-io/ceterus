@@ -18,7 +18,7 @@ pipeline {
                 script {
                     docker.withServer('') {
                     docker.withRegistry('https://registry.i.hosaka.io') {
-                        def app = docker.build("registry.i.hosaka.io/keychain")
+                        def app = docker.build("registry.i.hosaka.io/ceterus")
                         app.push("latest")
                         app.push("${env.BUILD_NUMBER}")
                         app.push("${env.BRANCH_NAME}")
