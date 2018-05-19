@@ -20,7 +20,7 @@
    :orchestrator (new-orchestrator)
    :handler (new-handler)
    :server (new-server env)
-   :health (new-health)
+   :health (new-health env)
    ))
 
 (defn -main [& args]
@@ -35,3 +35,13 @@
 
     (shutdown-agents)
     ))
+
+(comment
+  (require '[clj-crypto.core :as crypto])
+  (map #(-> % second  :bytes crypto/encode-base64-as-str)
+       (crypto/get-key-pair-map
+        (crypto/generate-key-pair :key-size 256 :algorithm "ECDSA")))
+
+
+
+  )
