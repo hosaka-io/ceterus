@@ -1,6 +1,6 @@
 (defproject io.hosaka/ceterus "0.1.0"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Configuration Service"
+  :url "https://github.com/hosaka-io/ceterus"
   :repositories ^:replace [["releases" "https://artifactory.i.hosaka.io/artifactory/libs-release"]
                            ["snapshots" "https://artifactory.i.hosaka.io/artifactory/libs-snapshot"]]
   :license {:name "Eclipse Public License"
@@ -9,7 +9,7 @@
                  [org.clojure/tools.nrepl "0.2.13"]
                  [org.clojure/spec.alpha "0.1.143"]
 
-                 [io.hosaka/common "1.0.0"]
+                 [io.hosaka/common "1.2.1"]
 
                  [org.apache.logging.log4j/log4j-core "2.11.0"]
                  [org.apache.logging.log4j/log4j-api "2.11.0"]

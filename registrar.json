@@ -1,0 +1,7 @@
+{
+    "id" : "1db158d0-d18b-4e72-8a48-a1a7b70821f2"
+    "parent": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+    "name": "ceterus",
+    "description": "Configuration Service",
+    "entity_type": "service"
+}
