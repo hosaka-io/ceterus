@@ -12,7 +12,7 @@
         (orchestrator/get-service-key-values orchestrator service body)
         (fn [e]
           (do
-            (log/warn "Bad get config request" e)
+            (log/warn (str "Bad get config request: " (.getMessage e)) e)
             (assoc response :body {:message "Invalid request"} :status 401))))))
 
 (defn get-db-health [health {:keys [response]}]

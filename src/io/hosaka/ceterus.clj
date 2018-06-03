@@ -3,6 +3,7 @@
             [com.stuartsierra.component :as component]
             [manifold.deferred :as d]
             [clojure.tools.logging :as log]
+            [clojure.tools.nrepl.server :as nrepl]
             [io.hosaka.ceterus.handler :refer [new-handler]]
             [io.hosaka.ceterus.orchestrator :refer [new-orchestrator]]
             [io.hosaka.common.keychain :refer [new-keychain]]
@@ -11,7 +12,6 @@
             [io.hosaka.common.server :refer [new-server]] )
   (:gen-class))
 
-(defonce system (atom {}))
 
 (defn init-system [env]
   (component/system-map
@@ -23,15 +23,28 @@
    :health (new-health env)
    ))
 
+(defn get-port [port]
+  (cond
+    (string? port) (try (Integer/parseInt port)
+                        (catch Exception e nil))
+    (integer? port) port
+    :else nil))
+
+(defonce system (atom {}))
+
+(defonce repl (atom nil))
+
 (defn -main [& args]
   (let [semaphore (d/deferred)]
     (reset! system (init-system env))
 
     (swap! system component/start)
+    (reset! repl (if-let [nrepl-port (get-port (:nrepl-port env))] (nrepl/start-server :port nrepl-port) nil))
     (log/info "Ceterus booted")
     (deref semaphore)
     (log/info "Ceterus going down")
     (component/stop @system)
+    (swap! repl (fn [server] (do (if server (nrepl/stop-server server)) nil)))
 
     (shutdown-agents)
     ))
